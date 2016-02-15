@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Salt \&apos;n\&apos; Pepper</string>
+    <string name="title_activity_take_order">TakeOrder</string>
+</resources>

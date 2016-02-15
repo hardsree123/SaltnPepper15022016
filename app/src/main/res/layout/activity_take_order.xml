@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.sitcom.sreejithm.saltnpepper.TakeOrder">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="133dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left|top"
+            android:weightSum="1"
+            android:id="@+id/optionList">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Veg"
+                android:id="@+id/veg"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="#a7ffbb"
+                android:onClick="vegClicked"
+                android:layout_weight="0.05" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Non VEG"
+                android:id="@+id/nonveg"
+                android:background="#f89393"
+                android:onClick="nonvegClicked"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BEVERAGES"
+                android:id="@+id/beverages"
+                android:background="#eadcfb"
+                android:onClick="beverageClicked"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DESERTS"
+                android:id="@+id/deserts"
+                android:background="#caf9ef"
+                android:onClick="desertClicked" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Selected Cuisine"
+                android:id="@+id/listViewText"
+                android:textColor="#380808"
+                android:textSize="15dp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="137dp"
+                android:id="@+id/selectedCuisines"
+                android:layout_weight="0.87"
+                android:choiceMode="singleChoice"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Order"
+                android:id="@+id/button"
+                android:background="#f1bfe5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:id="@+id/cuisinelist"
+            android:layout_marginLeft="10dp"
+            android:gravity="right">
+
+            <ExpandableListView
+                android:layout_width="195dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/chooseDish"
+                android:choiceMode="singleChoice"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</RelativeLayout>
