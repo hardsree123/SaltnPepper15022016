@@ -80,36 +80,128 @@ public class RestaurantMenu extends AppCompatActivity {
         //add all veg starters
         vegStarter = new ArrayList<String>();
         vegStarter.add("Gobi manchurian");
+        vegStarter.add("Chilly veg");
+        vegStarter.add("Chilly paneer");
+        vegStarter.add("Chilly mushroom");
+        vegStarter.add("Chilly babycorn ");
+        vegStarter.add("Paneer manchurian");
+        vegStarter.add("Babycorn manchurian ");
+        vegStarter.add("Mushroom manchurian");
+        vegStarter.add("Veg-65");
+        vegStarter.add("veg momos");
+        vegStarter.add("veg crispy");
+        vegStarter.add("veg-spring roll");
+        vegStarter.add("Veg thai roll");
+        vegStarter.add("Golden fried babycorn ");
         //add all main course(veg)
         vegMainCourse = new ArrayList<String>();
         vegMainCourse.add("Hyderabadi biriyani");
+        vegMainCourse.add("baked pumpkin");
+        vegMainCourse.add("pithivier");
+        vegMainCourse.add("pies");
+        vegMainCourse.add("polenta");
+        vegMainCourse.add("Khichuri-edit");
+        vegMainCourse.add("Kashmiri_Dum_Aaloo");
+        vegMainCourse.add("Choleindia");
+        vegMainCourse.add("Chapatiroll");
+        vegMainCourse.add("Chana_masala");
+        vegMainCourse.add("Cabbage_kootu");
+        vegMainCourse.add("Bisi_Bele_Bath");
+        vegMainCourse.add("Palakpaneer");
+        vegMainCourse.add("Delhi_Chaat_with_saunth_chutney");
+
         //add all veg rolls and breads
         vegRollsBreads = new ArrayList<String>();
         vegRollsBreads.add("Naan roti");
+        vegRollsBreads.add("Paneer Roll");
+        vegRollsBreads.add("Veg Manchurian Roll");
         //add all veg soups
         vegSoups = new ArrayList<String>();
         vegSoups.add("Tomato soup");
+        vegSoups.add("Veg hot & sour Soup");
+        vegSoups.add("Cream of veg clear Soup");
+        vegSoups.add("Mushroom Soup");
+        vegSoups.add("Asparagus Soup");
+        vegSoups.add("Mon chow Soup");
+        vegSoups.add("Sweet Corn Soup");
         //add all starters (non veg)
         nonVegStarters = new ArrayList<String>();
         nonVegStarters.add("Angara kabab");
+        nonVegStarters.add("chilly chicken");
+        nonVegStarters.add("chicken hunan");
+        nonVegStarters.add("chicken manchurian");
+        nonVegStarters.add("chicken salt & pepper");
+        nonVegStarters.add("Thai chilly chicken");
+        nonVegStarters.add("Kung pao chicken");
+        nonVegStarters.add("Mongolian Chicken ");
+        nonVegStarters.add("chicken momos");
+        nonVegStarters.add("chicken spring roll");
+        nonVegStarters.add("Chilly fish");
+        nonVegStarters.add("Fish-N-chips");
+        nonVegStarters.add("Fish manchurian/hunan");
+        nonVegStarters.add("Golden fried prawns");
         //add all main course items.
         nonVegMainCourse = new ArrayList<String>();
         nonVegMainCourse.add("Triple Schezwan");
+        nonVegMainCourse.add("butter-chicken");
+        nonVegMainCourse.add("Tawa chicken");
+        nonVegMainCourse.add("kadhai chicken");
+        nonVegMainCourse.add("chicken-korma");
+        nonVegMainCourse.add("chicken-salna");
+        nonVegMainCourse.add("chickenmanchurian");
+        nonVegMainCourse.add("mangalorean-chicken-curry");
+        nonVegMainCourse.add("desi chicken kari");
+        nonVegMainCourse.add("spicy_chicken_masala");
+        nonVegMainCourse.add("slemon chicken");
+        nonVegMainCourse.add("chicken red cook");
+        nonVegMainCourse.add("fish choice of sauce");
+        nonVegMainCourse.add("prawns choice of sauce");
         //add all rolls and bread items
         nonVegRollsBreads = new ArrayList<String>();
         nonVegRollsBreads.add("Chicken burger");
+        nonVegRollsBreads.add("Chicken Manchurian Roll ");
+        nonVegRollsBreads.add("Chicken Mayonnaise Roll");
+        nonVegRollsBreads.add("Chicken Indiana Roll");
+        nonVegRollsBreads.add("Butter Chicken Roll");
+        nonVegRollsBreads.add("Chicken Sausage Roll");
         //add all non veg soup items
         nonVegSoup = new ArrayList<String>();
         nonVegSoup.add("Mutton soup");
+        nonVegSoup.add("Chicken Clear soup");
+        nonVegSoup.add("Kozhi Rasam");
+        nonVegSoup.add("Elumbu(Born) Soup");
         //add all hot beverages
         hotBeverages = new ArrayList<String>();
         hotBeverages.add("Tea");
+        hotBeverages.add("Brewed coffee");
+        hotBeverages.add("Latte");
+        hotBeverages.add("Cappiccino");
+        hotBeverages.add("Depth charge");
+        hotBeverages.add("Caramel Latte");
+        hotBeverages.add("Americano");
+        hotBeverages.add("Chai Latte");
         //add all cold beverages
         coldBeverages = new ArrayList<String>();
         coldBeverages.add("Cold coffee");
+        coldBeverages.add("Jasmine Milk Tea");
+        coldBeverages.add("Taro Milk Tea");
+        coldBeverages.add("Chocolate Cereal Tea");
+        coldBeverages.add("Coconut Milk Tea");
+        coldBeverages.add("Chocolate Milk Tea");
+        coldBeverages.add("Oreo Milk Tea");
+        coldBeverages.add("Healthy Milk Tea");
+        coldBeverages.add("Blueberry Milk Tea");
         //add all remaining alchoholic beverages
         alcoholBeverages = new ArrayList<String>();
         alcoholBeverages.add("Tri Mocktail");
+        alcoholBeverages.add("Bud Light");
+        alcoholBeverages.add("Ice House");
+        alcoholBeverages.add("Miller Light");
+        alcoholBeverages.add("Corona");
+        alcoholBeverages.add("Asahi");
+        alcoholBeverages.add("Sapporo");
+        alcoholBeverages.add("Moscato");
+        alcoholBeverages.add("House Merlot");
         //add all remaining icecreams
         iceCreams = new ArrayList<String>();
         iceCreams.add("Vanilla crushed");
@@ -119,6 +211,8 @@ public class RestaurantMenu extends AppCompatActivity {
         //add all remaining sweet details below
         sweets = new ArrayList<String>();
         sweets.add("Gulab jamun");
+        sweets.add("Gajar Halwa");
+        sweets.add("Shewai Kheer");
         //sweets.add("");
     }
 
