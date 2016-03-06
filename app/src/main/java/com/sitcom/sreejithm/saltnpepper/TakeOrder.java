@@ -1,20 +1,19 @@
 package com.sitcom.sreejithm.saltnpepper;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sitcom.sreejithm.expandablelistview.ExpandableListAdapter;
-
-import java.util.LinkedHashMap;
-import java.util.List;
+import com.sitcom.sreejithm.helper.SQLiteHandler;
 
 
 public class TakeOrder extends RestaurantMenu {
@@ -24,27 +23,30 @@ public class TakeOrder extends RestaurantMenu {
     ExpandableListView expListView;
     ArrayAdapter listViewAdapter;
     ListView listView;
+
+    SQLiteHandler orderDataDb;
+
+    Button btnConfirmOrder;
+    private
     String SelectedGrp = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_order);
 
-
-
-        //TextView logingUserName = (TextView) findViewById(R.id.servername);
-        //TextView totalguest = (TextView) findViewById(R.id.total_guest);
-        //final TextView tableNumber = (TextView) findViewById(R.id.table_number);
-        //final TextView waiterAssigned = (TextView) findViewById(R.id.waiter_assigned);
+        orderDataDb = new SQLiteHandler(getApplicationContext());
 
         final Intent intent = getIntent();
-        final String name = "Welcome ," + intent.getStringExtra("login");
-        //logingUserName.setText(name);
+        final String totalGuest = intent.getStringExtra("total_guest");
+        final String tableNumber = intent.getStringExtra("table_number");
+        final String waiterName = intent.getStringExtra("waiter_assigned");
+        final String serverName = intent.getStringExtra("server_name");
 
         expListView = (ExpandableListView) findViewById(R.id.chooseDish);
 
         listView = (ListView) findViewById(R.id.selectedCuisines);
 
+        btnConfirmOrder = (Button) findViewById(R.id.confirmOrder);
         /*
         createGroupList();
         createCollection();
@@ -96,13 +98,46 @@ public class TakeOrder extends RestaurantMenu {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = (String)listView.getItemAtPosition(position);
+                String selected = (String) listView.getItemAtPosition(position);
                 RemoveTextViewValues(selected); // removing the selected text item.
                 SetListView(); // resetting the list once the selected item is removed.
             }
         });
+
+        btnConfirmOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(selectedCuisines.size() > 0) {
+                        long orderId = orderDataDb.addOrder(serverName, waiterName, tableNumber, totalGuest);
+
+                        if (orderId > 0) {
+                            Toast.makeText(getApplicationContext(), "Order confirmed", Toast.LENGTH_SHORT).show();
+                            long dishId = orderDataDb.addDishData(selectedCuisines, orderId);
+                            if (dishId > 0) {
+                                Log.println(Log.INFO, "Dish data inserted", Integer.toString((int) dishId));
+                            } else {
+                                Log.println(Log.INFO, "Error inserting", null);
+                            }
+                            GoToMainActivity();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Select dish", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                catch (Exception ex){
+                    Log.println(Log.ERROR,"Order error !", ex.getMessage().toString());
+                }
+            }
+        });
     }
 
+    private void GoToMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
     private void SetTextViewValues(String selected) {
         selectedCuisines.add(selected);

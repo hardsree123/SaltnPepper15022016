@@ -44,7 +44,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return childPosition;
     }
 
-
+    public String getGroupName(int groupPosition){
+        return saltnpepperlists.get(groupPosition);
+    }
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String saltnpepperList = (String) getChild(groupPosition, childPosition);

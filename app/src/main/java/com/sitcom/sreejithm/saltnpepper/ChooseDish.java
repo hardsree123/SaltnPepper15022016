@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import com.sitcom.sreejithm.expandablelistview.ExpandableListAdapter;
+import com.sitcom.sreejithm.helper.SQLiteHandler;
+
 import android.widget.ListView;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +37,20 @@ public class ChooseDish extends AppCompatActivity{
     Map<String,String> selectedOptionDict;
     String selectedgrp = "";//setting the default selected value
     TextView waiterAssigned,totalguest,tableNumber;
+    String ServerName;
+    private int a = 0 , b = 0 , c = 0;
+    private SQLiteHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_dish);
+
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+        ServerName = user.get("name");
+        String email = user.get("email");
 
 
         TextView logingUserName = (TextView) findViewById(R.id.servername);
@@ -45,9 +58,8 @@ public class ChooseDish extends AppCompatActivity{
         tableNumber = (TextView) findViewById(R.id.table_number);
         waiterAssigned = (TextView) findViewById(R.id.waiter_assigned);
 
-        Intent intent = getIntent();
-        String name = "Welcome ," + intent.getStringExtra("login");
-        logingUserName.setText(name);
+        String userName = "Welcome ," + ServerName;
+        logingUserName.setText(userName);
         SetTextViewValues("");//setting the default values
         createGroupList();
         createCollection();
@@ -100,15 +112,19 @@ public class ChooseDish extends AppCompatActivity{
         switch(selectedgrp)
         {
             case "Total Guest":
+                a=1;
                 totalguest.setText( selectedgrp + " : " + selected );
                 break;
             case "Table Number":
+                b=1;
                 tableNumber.setText( selectedgrp + " : " + selected );
                 break;
             case "Waiter Assigned":
+                c=1;
                 waiterAssigned.setText( selectedgrp + " : " + selected );
                 break;
             default:
+                a=0;
                 totalguest.setText("Total Guest : 0");
                 tableNumber.setText("Table Number : Not decided");
                 waiterAssigned.setText("Waiter Assigned : Not decided");
@@ -133,14 +149,8 @@ public class ChooseDish extends AppCompatActivity{
     private void createCollection() {
         // preparing options collection(child)
         String[] totalGuest = {"1","2","3","4","5","6","7","8"}; //this portion will be modified to take values from a text box
-        String[] tableNumber = { "A","B","C","D","E","F","G","H" }; // this portion will be modified in future releases.
-        String[] waiterAssigned = { "Ramesh","Suresh","Clint","Pranav","Avani","Anju" };
-        /*
-        String[] sonyModels = { "VAIO E Series", "VAIO Z Series",
-                "VAIO S Series", "VAIO YB Series" };
-        String[] dellModels = { "Inspiron", "Vostro", "XPS" };
-        String[] samsungModels = { "NP Series", "Series 5", "SF Series" };
-        */
+        String[] tableNumber = { "1","2","3","4","5","6","7","8" }; // this portion will be modified in future releases.
+        String[] waiterAssigned = { "Ramesh","Suresh","Clint","Pranav","Avani","Anju","Soman", "Biju" };
 
         optionCollection = new LinkedHashMap<String, List<String>>();
 
@@ -155,14 +165,7 @@ public class ChooseDish extends AppCompatActivity{
             {
                 loadChild(waiterAssigned);
             }
-            /*
-            else if (option.equals("HCL"))
-                loadChild(hclModels);
-            else if (option.equals("Samsung"))
-                loadChild(samsungModels);
-            else
-                loadChild(lenovoModels);
-            */
+
             optionCollection.put(option, childList);
         }
     }
@@ -199,11 +202,17 @@ public class ChooseDish extends AppCompatActivity{
     }
 
     public void takeorder(View view){
-        Intent intent = new Intent(this, TakeOrder.class);
-        intent.putExtra("total_guest",totalguest.getText().toString());
-        intent.putExtra("table_number",tableNumber.getText().toString());
-        intent.putExtra("waiter_assigned", waiterAssigned.getText().toString());
-        startActivity(intent);
+        if((a+b+c) >= 3) {
+            Intent intent = new Intent(this, TakeOrder.class);
+            intent.putExtra("total_guest", totalguest.getText().toString());
+            intent.putExtra("table_number", tableNumber.getText().toString());
+            intent.putExtra("waiter_assigned", waiterAssigned.getText().toString());
+            intent.putExtra("server_name", ServerName);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"Table details missing",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

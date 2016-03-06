@@ -22,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtEmail;
     private Button btnLogout;
     private Button btnChooseDish;
+    private Button btnCheckOrder;
+
     private SQLiteHandler db;
     private SessionManager session;
 
+    private String ServerName ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnChooseDish = (Button) findViewById(R.id.buttonChooseDish);
-        
+        btnCheckOrder = (Button) findViewById(R.id.chekOrder);
+
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
 
@@ -69,6 +73,19 @@ public class MainActivity extends AppCompatActivity {
                 logoutUser();
             }
         });
+
+        btnCheckOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckOrderStatus();                
+            }
+        });
+    }
+
+    private void CheckOrderStatus() {
+        Intent intent = new Intent(MainActivity.this, OrderStatus.class);
+        startActivity(intent);
+        finish();
     }
 
     private void chooseDish() {
@@ -82,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
      * preferences Clears the user data from sqlite users table
      * */
     private void logoutUser() {
-        session.setLogin(false);
+        session.setLogin(false,"");
 
         db.deleteUsers();
 

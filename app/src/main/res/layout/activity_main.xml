@@ -7,12 +7,13 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,13 +54,35 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout"
         android:layout_alignStart="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout">
+        android:layout_alignEnd="@+id/linearLayout"
+        android:weightSum="1">
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Check Order"
+            android:id="@+id/chekOrder"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:textAllCaps="false"
+            android:textColor="#0b0707"
+            android:textSize="15dp"
+            android:textColorHint="#070707"
+            android:background="#cdfabf" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
+            android:layout_marginTop="100dp"
             android:background="@color/btn_logut_bg"
             android:text="@string/btn_logout"
             android:textAllCaps="false"

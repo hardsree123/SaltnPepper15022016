@@ -30,6 +30,10 @@
         <activity android:name=".ChooseDish"
             android:screenOrientation="portrait"/>
         <activity android:name=".TakeOrder" android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".OrderStatus"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

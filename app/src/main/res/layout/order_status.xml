@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="287dp"
+        android:id="@+id/tableOrderList"
+        android:choiceMode="singleChoice" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <Button
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
+            android:text="Order delivered"
+            android:id="@+id/orderDelivered"
+            android:layout_gravity="center_horizontal"
+            android:background="#69d0ff" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Complete Order"
+            android:id="@+id/orderCompleted"
+            android:background="#d2ff3b35"
+            android:layout_gravity="right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="185dp"
+            android:id="@+id/dishesForTable"
+            android:choiceMode="singleChoice" />
+
+    </LinearLayout>
+
+</LinearLayout>

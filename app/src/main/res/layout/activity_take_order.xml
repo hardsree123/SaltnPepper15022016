@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Confirm Order"
-                android:id="@+id/button"
+                android:id="@+id/confirmOrder"
                 android:background="#f1bfe5" />
         </LinearLayout>
 

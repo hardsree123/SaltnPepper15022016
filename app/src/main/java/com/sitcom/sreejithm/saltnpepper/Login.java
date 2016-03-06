@@ -31,6 +31,7 @@ public class Login extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnLogin;
     private Button btnLinkToRegister;
+
     public EditText inputEmail;
     public EditText passwordText;
 
@@ -47,6 +48,7 @@ public class Login extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -59,8 +61,10 @@ public class Login extends AppCompatActivity {
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
+            Log.println(Log.INFO,"Loging in user : " + session.getUserName(),"");
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(Login.this, MainActivity.class);
+            intent.putExtra("login",session.getUserName());
             startActivity(intent);
             finish();
         }
@@ -110,6 +114,8 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     private void checkLogin(final String email,final String password) {
@@ -137,9 +143,7 @@ public class Login extends AppCompatActivity {
 
                     // Check for error node in json
                     if (!error) {
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
+
 
                         // Now store the user in SQLite
                         String uid = jObj.getString("uid");
@@ -149,12 +153,17 @@ public class Login extends AppCompatActivity {
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
+                        // user successfully logged in
+                        // Create login session
+                        session.setLogin(true,name);
 
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
-
+                        Log.println(Log.INFO, "Loging in user : " + session.getUserName(), "");
                         // Launch main activity
                         Intent intent = new Intent(Login.this,MainActivity.class);
+
+                        intent.putExtra("login",name);
                         startActivity(intent);
                         finish();
                     } else {
