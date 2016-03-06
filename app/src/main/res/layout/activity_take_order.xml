@@ -56,7 +56,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DESERTS"
+                android:text="DESSERTS"
                 android:id="@+id/deserts"
                 android:background="#caf9ef"
                 android:onClick="desertClicked" />

@@ -33,7 +33,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saltnpepper";
 
     // Login table name
-    private static final String TABLE_USER = "user";
+    private static final String TABLE_LOGIN = "login";
 
     // Login Table Columns names
     private static final String KEY_ID = "id";
@@ -67,10 +67,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_DISH_PRICE = "Price";
 
     // Login table name
-    private static final String TABLE_LoGIN = "login";
+    private static final String TABLE_USER = "users";
 
     // Login Table Columns names
     private static final String KEY_PASSWORD = "userpassword";
+    private static final String KEY_UPDATED_AT = "updated_at";
+
 
 
     public SQLiteHandler(Context context) {
@@ -80,7 +82,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
+        String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_EMAIL + " TEXT UNIQUE," + KEY_UID + " TEXT,"
                 + KEY_CREATED_AT + " TEXT" + ")";
@@ -97,6 +99,15 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 + KEY_DISH_ID + " INTEGER PRIMARY KEY," + KEY_ORDER_ID + " INTEGER,"
                 + KEY_DISH_NAME + " TEXT, " + KEY_DISH_PRICE + " TEXT)";
         db.execSQL(CREATE_DISH_DATA);
+        /**
+         * Table users created
+         * */
+        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USER + "("
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
+                + KEY_EMAIL + " TEXT UNIQUE," + KEY_PASSWORD + " TEXT,"
+                + KEY_UPDATED_AT + " TEXT,"
+                + KEY_CREATED_AT + " TEXT" + ")";
+        db.execSQL(CREATE_USERS_TABLE);
 
         Log.d(TAG, "Database tables created");
     }
@@ -104,6 +115,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         // Drop older table if existed
@@ -127,7 +140,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_CREATED_AT, created_at); // Created At
 
         // Inserting Row
-        long id = db.insert(TABLE_USER, null, values);
+        long id = db.insert(TABLE_LOGIN, null, values);
         db.close(); // Closing database connection
 
         Log.d(TAG, "New user inserted into sqlite: " + id);
@@ -138,7 +151,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
      * */
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
-        String selectQuery = "SELECT  * FROM " + TABLE_USER;
+        String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -164,10 +177,60 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void deleteUsers() {
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
-        db.delete(TABLE_USER, null, null);
+        db.delete(TABLE_LOGIN, null, null);
         db.close();
 
         Log.d(TAG, "Deleted all user info from sqlite");
+    }
+
+    /**
+     *
+     * @param name
+     * @param email
+     * @param password
+     */
+    public long registerUser(String name, String email, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Date current = new Date();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, name); // Name
+        values.put(KEY_EMAIL, email); // username is email
+        values.put(KEY_PASSWORD, password);
+        values.put(KEY_CREATED_AT, dateFormat.format(current).toString());
+
+        // Inserting Row
+        long id = db.insert(TABLE_USER, null, values);
+        db.close(); // Closing database connection
+
+        Log.d(TAG, "New user registered into sqlite: " + id);
+
+        return id;
+    }
+
+    /**
+     *
+     * @param email
+     * @param password
+     * @return
+     */
+    public Contact checkLogin(String email , String password){
+        String selectQuery = "SELECT id,name, email FROM " + TABLE_USER + " WHERE " + KEY_EMAIL + "='" + email + "'"
+                + " and " + KEY_PASSWORD + " = '" + password + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Contact loggedIn = null;
+        Cursor c = db.rawQuery(selectQuery, null);
+        // Move to first row
+        c.moveToFirst();
+        String output = "Invalid login";
+        if (c.getCount() > 0) {
+            loggedIn = new Contact(c.getString((c.getColumnIndex(KEY_NAME))),c.getString((c.getColumnIndex(KEY_EMAIL))));
+            output= loggedIn.loggedInUser;
+        }
+        c.close();
+        db.close();
+        Log.d(TAG, "Fetching user from Sqlite: " + output);
+        return loggedIn;
     }
 
     /**

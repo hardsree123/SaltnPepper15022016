@@ -10,4 +10,6 @@ public class AppConfig {
     // Server user register url
     public static String URL_REGISTER = "http://192.168.0.99:8085/saltnpepper/register.php";
 
+    //DB Preference
+    public static String DB_PREFS = "sqlite";
 }

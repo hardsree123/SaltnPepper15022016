@@ -23,7 +23,11 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.sitcom.sreejithm.saltnpepper.ChooseDish;
@@ -44,6 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +90,10 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    //Commenting the mysql login part
+                    //registerUser(name, email, password);
+                    //SQLite Login Part
+                    RegisterUserThroughSQLite(name,email,password);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -191,6 +201,34 @@ public class RegisterActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    private void RegisterUserThroughSQLite(final String name, final String email,
+                                           final String password){
+        // Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+        pDialog.setMessage("Registering ...");
+        showDialog();
+        Date current = new Date();
+
+        long id = db.registerUser(name,email,password);
+        if(id > 0) {
+            // Inserting row in users table
+            db.addUser(name, email, Long.toString(id), dateFormat.format(current).toString());
+            Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+
+            // Launch login activity
+            Intent intent = new Intent(
+                    RegisterActivity.this,
+                    Login.class);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Some error occurred ! Try again", Toast.LENGTH_LONG).show();
+        }
+
+    }
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();

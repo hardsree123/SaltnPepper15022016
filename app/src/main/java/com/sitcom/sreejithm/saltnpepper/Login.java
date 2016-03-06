@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.sitcom.sreejithm.activity.RegisterActivity;
+import com.sitcom.sreejithm.helper.Contact;
 import com.sitcom.sreejithm.helper.SessionManager;
 import com.sitcom.sreejithm.helper.SQLiteHandler;
 import com.sitcom.sreejithm.app.AppConfig;
@@ -23,7 +24,11 @@ import com.sitcom.sreejithm.app.AppController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -38,6 +43,8 @@ public class Login extends AppCompatActivity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +98,13 @@ public class Login extends AppCompatActivity {
 
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
+
                     // login user
-                    checkLogin(email, password);
+                    //MySQL Datalogin
+                    //checkLogin(email, password); //commenting MySql DB Connection and and fetching inorder to fetch from
+                    //SQLite Login
+                    loginThroughSqlite(email,password);
+
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -204,6 +216,34 @@ public class Login extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    /**
+     *
+     * @param email
+     * @param password
+     */
+    private void loginThroughSqlite(final String email, final String password) {
+        Contact loginContact = db.checkLogin(email, password);
+        Date current = new Date();
+        if (loginContact != null) {
+            // Create login session
+            session.setLogin(true, loginContact.loggedInUser);
+
+            // Inserting row in users table
+            db.addUser(loginContact.loggedInUser, email, "EMP001", dateFormat.format(current).toString());
+            Log.println(Log.INFO, "Loging in user : " + session.getUserName(), "");
+            // Launch main activity
+            Intent intent = new Intent(Login.this, MainActivity.class);
+
+            intent.putExtra("login", loginContact.loggedInUser);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Incorrect login !!!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void showDialog() {
