@@ -1,4 +1,5 @@
 package com.sitcom.sreejithm.saltnpepper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -127,7 +128,14 @@ public class OrderStatus extends AppCompatActivity {
                     SetOrderMapping();
                     SetSelectedTableDish(orderId);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Select a table", Toast.LENGTH_SHORT).show();
+                    if (tableGrp.size() < 1) {
+                        Intent intent;
+                        intent = new Intent(OrderStatus.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Select a table", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

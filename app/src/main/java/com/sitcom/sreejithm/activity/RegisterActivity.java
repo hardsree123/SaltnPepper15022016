@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -93,7 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
                     //Commenting the mysql login part
                     //registerUser(name, email, password);
                     //SQLite Login Part
-                    RegisterUserThroughSQLite(name,email,password);
+                    if(isValidEmail(email)) {
+                        RegisterUserThroughSQLite(name, email, password);
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Enter valid email!", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -115,6 +122,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
     /**
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url

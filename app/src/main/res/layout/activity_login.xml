@@ -84,7 +84,6 @@
         android:background="@color/btn_login_bg"
         android:textColor="@color/btn_login"
         />
-
             <Button
                 android:id="@+id/btnLinkToRegisterScreen"
                 android:layout_width="fill_parent"
