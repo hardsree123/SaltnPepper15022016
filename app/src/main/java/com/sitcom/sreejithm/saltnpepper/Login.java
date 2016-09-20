@@ -21,6 +21,7 @@ import com.sitcom.sreejithm.helper.SQLiteHandler;
 import com.sitcom.sreejithm.app.AppConfig;
 import com.sitcom.sreejithm.app.AppController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -130,28 +131,28 @@ public class Login extends AppCompatActivity {
 
     }
 
-    /**
-     * Private constructor
-     */
-    private Login(){
-
-    }
-
-    /***
-     * Singleton instance
-     */
-    private static Login instance;
-    /**
-     * Singleton initialization
-     * @return
-     */
-    public static Login getInstance()
-    {
-        if(instance == null){
-            instance = new Login();
-        }
-        return instance;
-    }
+//    /**
+//     * Private constructor
+//     */
+//    private Login(){
+//
+//    }
+//
+//    /***
+//     * Singleton instance
+//     */
+//    private static Login instance;
+//    /**
+//     * Singleton initialization
+//     * @return
+//     */
+//    public static Login getInstance()
+//    {
+//        if(instance == null){
+//            instance = new Login();
+//        }
+//        return instance;
+//    }
 
     private void checkLogin(final String email,final String password) {
         // Tag used to cancel the request
@@ -240,8 +241,8 @@ public class Login extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
-    private void fetchDish(final String email,final String password) {
+    /*
+    private void fetchDish() {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -267,27 +268,20 @@ public class Login extends AppCompatActivity {
                     // Check for error node in json
                     if (!error) {
 
+                        JSONArray result = jObj.getJSONArray("result");
+                        for (int i =0 ; i<result.length();i++){
+                            JSONObject jo = result.getJSONObject(i);
+                            String id = jo.getString("dishId");
+                            String dishname = jo.getString("dishname");
+                            String dishType = jo.getString("dishtype");
+                            String dishsubType = jo.getString("dishsubtype");
+                            String price = jo.getString("price");
+                            HashMap<String,String> employees = new HashMap<>();
+                            employees.put(Config.TAG_ID,id);
+                            employees.put(Config.TAG_NAME,name);
+                            list.add(employees);
+                        }
 
-                        // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true,name);
-
-                        // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
-                        Log.println(Log.INFO, "Loging in user : " + session.getUserName(), "");
-                        // Launch main activity
-                        Intent intent = new Intent(Login.this,MainActivity.class);
-
-                        intent.putExtra("login",name);
-                        startActivity(intent);
                         finish();
                     } else {
                         // Error in login. Get the error message
@@ -317,7 +311,7 @@ public class Login extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
+                params.put("id", email);
                 params.put("password", password);
 
                 return params;
@@ -328,6 +322,7 @@ public class Login extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+    */
 
     /**
      *

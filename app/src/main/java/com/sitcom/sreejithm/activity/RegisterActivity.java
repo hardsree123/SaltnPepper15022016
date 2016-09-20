@@ -91,11 +91,12 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    //Commenting the mysql login part
-                    //registerUser(name, email, password);
+
                     //SQLite Login Part
                     if(isValidEmail(email)) {
-                        RegisterUserThroughSQLite(name, email, password);
+                        //Commenting the mysql login part
+                        registerUser(name, email, password);
+                        //RegisterUserThroughSQLite(name, email, password);
                     }
                     else
                     {

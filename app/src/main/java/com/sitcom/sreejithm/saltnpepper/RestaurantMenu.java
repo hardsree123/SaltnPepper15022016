@@ -1,13 +1,31 @@
 package com.sitcom.sreejithm.saltnpepper;
 
+import android.app.ProgressDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.sitcom.sreejithm.app.AppConfig;
+import com.sitcom.sreejithm.app.AppController;
 import com.sitcom.sreejithm.expandablelistview.ExpandableListAdapter;
+import com.sitcom.sreejithm.helper.Dishes;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -16,7 +34,8 @@ import java.util.Map;
  * the class can be modified with strictly adhering to OOPs concept.
  */
 public class RestaurantMenu extends AppCompatActivity {
-    //below are parent list for veg, nonveg, desert and beverages
+    private static final String TAG = "Restraunt Menu";
+            //below are parent list for veg, nonveg, desert and beverages
     List<String> commonGrp; //veg and non veg fused to common grp
     List<String> beverageGrp;//Hot , cold, and alchoholic
     List<String> desertGrp;//Ice Creams, Salads, Sweets
@@ -48,10 +67,17 @@ public class RestaurantMenu extends AppCompatActivity {
     Map<String,List<String>> beveragesOptionCollection;
     Map<String,List<String>> desertOptionCollection;
 
+
+    private Map<String,Dishes> dishMapcollection;
     public RestaurantMenu()
     {
+
+        // Progress dialog
+
+        dishMapcollection = new LinkedHashMap<String,Dishes>();
         CreateGroup();
-        CreateOptions();
+        //CreateOptions();
+        fetchDish();
         selectedCuisines = new ArrayList<String>();
     }
 
@@ -73,6 +99,139 @@ public class RestaurantMenu extends AppCompatActivity {
         desertGrp.add("Salads");
         desertGrp.add("Sweets");
 
+    }
+
+    private void setDishList(String dishName, String dishType, String dishSubType){
+        switch(dishType){
+            case "VEG":
+                switch(dishSubType){
+                    case "STARTERS":
+                        if(vegStarter == null) {
+                            vegStarter = new ArrayList<String>();
+                        }
+                        if(!vegStarter.contains(dishName)){
+                            vegStarter.add(dishName);
+                        }
+                        break;
+                    case "MAIN COURSE":
+                        if(vegMainCourse == null) {
+                            vegMainCourse = new ArrayList<String>();
+                        }
+                        if(!vegMainCourse.contains(dishName)){
+                            vegMainCourse.add(dishName);
+                        }
+                        break;
+                    case "rolls and breads":
+                        if(vegRollsBreads == null) {
+                            vegRollsBreads = new ArrayList<String>();
+                        }
+                        if(!vegRollsBreads.contains(dishName)){
+                            vegRollsBreads.add(dishName);
+                        }
+                        break;
+                    case "Soups":
+                        if(vegSoups == null) {
+                            vegSoups = new ArrayList<String>();
+                        }
+                        if(!vegSoups.contains(dishName)){
+                            vegSoups.add(dishName);
+                        }
+                        break;
+                }
+                break;
+            case "NON VEG":
+                switch(dishSubType){
+                    case "STARTERS":
+                        if(nonVegStarters == null) {
+                            nonVegStarters = new ArrayList<String>();
+                        }
+                        if(!nonVegStarters.contains(dishName)){
+                            nonVegStarters.add(dishName);
+                        }
+                        break;
+                    case "MAIN COURSE":
+                        if(nonVegMainCourse == null) {
+                            nonVegMainCourse = new ArrayList<String>();
+                        }
+                        if(!nonVegMainCourse.contains(dishName)){
+                            nonVegMainCourse.add(dishName);
+                        }
+                        break;
+                    case "rolls and breads":
+                        if(nonVegRollsBreads== null) {
+                            nonVegRollsBreads = new ArrayList<String>();
+                        }
+                        if(!nonVegRollsBreads.contains(dishName)){
+                            nonVegRollsBreads.add(dishName);
+                        }
+                        break;
+                    case "Soups":
+                        if(nonVegSoup== null) {
+                            nonVegSoup = new ArrayList<String>();
+                        }
+                        if(!nonVegSoup.contains(dishName)){
+                            nonVegSoup.add(dishName);
+                        }
+                        break;
+                }
+                break;
+            case "BEVERAGES":
+                switch(dishSubType){
+                    case "Hot":
+                        if(hotBeverages== null) {
+                            hotBeverages = new ArrayList<String>();
+                        }
+                        if(!hotBeverages.contains(dishName)){
+                            hotBeverages.add(dishName);
+                        }
+                        break;
+                    case "Cold":
+                        if(coldBeverages== null) {
+                            coldBeverages = new ArrayList<String>();
+                        }
+                        if(!coldBeverages.contains(dishName)){
+                            coldBeverages.add(dishName);
+                        }
+                        break;
+                    case "Alchoholic":
+                        if(alcoholBeverages== null) {
+                            alcoholBeverages = new ArrayList<String>();
+                        }
+                        if(!alcoholBeverages.contains(dishName)){
+                            alcoholBeverages.add(dishName);
+                        }
+                        break;
+                }
+                break;
+            case "DESERTS":
+                switch(dishSubType){
+                    case "Ice Cream":
+                        if(iceCreams== null) {
+                            iceCreams = new ArrayList<String>();
+                        }
+                        if(!iceCreams.contains(dishName)){
+                            iceCreams.add(dishName);
+                        }
+                        break;
+                    case "Salads":
+                        if(salads== null) {
+                            salads = new ArrayList<String>();
+                        }
+                        if(!salads.contains(dishName)){
+                            salads.add(dishName);
+                        }
+                        break;
+                    case "Sweets":
+                        if(sweets== null) {
+                            sweets = new ArrayList<String>();
+                        }
+                        if(!sweets.contains(dishName)){
+                            sweets.add(dishName);
+                        }
+                        break;
+                }
+                break;
+        }
     }
 
     private void CreateOptions()
@@ -312,6 +471,72 @@ public class RestaurantMenu extends AppCompatActivity {
     public ExpandableListAdapter FetchExpandableListDesertAdapter(View view){
         ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this,desertGrp,desertOptionCollection);
         return expListAdapter;
+    }
+
+
+    private void fetchDish() {
+        // Tag used to cancel the request
+        String tag_string_req = "req_dish";
+
+
+        StringRequest strReq = new StringRequest(AppConfig.URL_FETCH_DISH, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Fetching dish: " + response.toString());
+
+                try {
+                    JSONObject jObj = null;
+                    try {
+                        jObj = new JSONObject(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    boolean error = jObj.getBoolean("error");
+
+                    // Check for error node in json
+                    if (!error) {
+
+                        JSONArray result = jObj.getJSONArray("result");
+                        Dishes dish = null;
+                        for (int i =0 ; i<result.length();i++){
+                            JSONObject jo = result.getJSONObject(i);
+                            dish = new Dishes();
+                            dish.setDishid(Integer.valueOf(jo.getString("dishId")));
+                            dish.setDishname(jo.getString("dishname"));
+                            dish.setDishtype(jo.getString("dishtype"));
+                            dish.setDishSubType(jo.getString("dishsubtype"));
+                            dish.setDishSubType(jo.getString("price"));
+                            setDishList(dish.getDishname(), dish.getDishtype(), dish.getDishSubType());
+                            dishMapcollection.put(dish.getDishname(),dish);
+                        }
+
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        }) {
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
 }
