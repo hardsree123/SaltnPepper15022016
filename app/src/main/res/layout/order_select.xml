@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:textAlignment="center">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Veg"
+            android:id="@+id/veg"
+            android:layout_column="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="false" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Non Veg"
+            android:id="@+id/nonveg"
+            android:layout_column="5"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/veg"
+            android:layout_alignParentBottom="false" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deserts"
+            android:id="@+id/desert"
+            android:layout_column="14"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/beverage" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beverages"
+            android:id="@+id/beverage"
+            android:layout_column="17"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/nonveg"
+            android:layout_alignParentBottom="false" />
+
+    <!--
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="593dp"
+        android:layout_height="153dp"
+        android:layout_gravity="left|top"
+        android:weightSum="1"
+        android:id="@+id/optionList">
+
+    </LinearLayout>
+    -->
+    <!--
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:id="@+id/cuisinelist"
+        android:layout_marginLeft="10dp"
+        android:gravity="right">
+
+    </LinearLayout>
+    -->
+
+    <ListView
+        android:layout_width="219dp"
+        android:layout_height="248dp"
+        android:id="@+id/selectedCuisines"
+        android:choiceMode="singleChoice"
+        android:layout_weight="0.16"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/beverage" />
+
+    <ExpandableListView
+        android:layout_width="166dp"
+        android:layout_height="238dp"
+        android:id="@+id/chooseDish"
+        android:choiceMode="singleChoice"
+        android:layout_marginLeft="10dp"
+        android:layout_alignTop="@+id/selectedCuisines"
+        android:layout_alignEnd="@+id/desert"
+        android:layout_toEndOf="@+id/selectedCuisines" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirmorder"
+        android:id="@+id/confirmOrder"
+        android:layout_column="17"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/desert" />
+
+</RelativeLayout>

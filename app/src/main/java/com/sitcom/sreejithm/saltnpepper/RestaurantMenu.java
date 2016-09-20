@@ -119,7 +119,7 @@ public class RestaurantMenu extends AppCompatActivity {
         vegSoups = new ArrayList<String>();
         vegSoups.add("Tomato soup");
         vegSoups.add("Veg hot & sour Soup");
-        vegSoups.add("Cream of veg clear Soup");
+            vegSoups.add("Cream of veg clear Soup");
         vegSoups.add("Mushroom Soup");
         vegSoups.add("Asparagus Soup");
         vegSoups.add("Mon chow Soup");

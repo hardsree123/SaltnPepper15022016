@@ -28,11 +28,16 @@
             android:launchMode="singleTop" />
         <!--<activity android:name="com.sitcom.choosedish.ChooseDish" />-->
         <activity android:name=".ChooseDish"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TakeOrder" android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            />
+        <activity android:name=".TakeOrder" android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            />
 
         <activity android:name=".OrderStatus"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
 
     </application>
 

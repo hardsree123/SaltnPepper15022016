@@ -35,20 +35,19 @@
             android:layout_height="wrap_content"
             android:textSize="13dp" />
 
-        <Button
-            android:id="@+id/buttonChooseDish"
-            android:layout_width="fill_parent"
+        <TextClock
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="#88cdf0"
-            android:text="Choose Dish"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:id="@+id/textClock"
+            android:layout_gravity="top|center_horizontal"
+            android:textSize="25dp"
+            android:layout_above="@+id/chekOrder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,37 +56,74 @@
         android:layout_alignEnd="@+id/linearLayout"
         android:weightSum="1">
 
-        <TextClock
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textClock"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="20dp"
-            android:textSize="25dp" />
-
+        <!--
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Check Order"
             android:id="@+id/chekOrder"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp"
             android:textAllCaps="false"
             android:textColor="#0b0707"
             android:textSize="15dp"
             android:textColorHint="#070707"
-            android:background="#cdfabf" />
+            android:background="#cdfabf"
+            android:layout_above="@+id/btnLogout"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="46dp" />
+        -->
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
             android:background="@color/btn_logut_bg"
             android:text="@string/btn_logout"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15dp" />
-    </LinearLayout>
+            android:textSize="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/buttonChooseDish"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#88cdf0"
+            android:text="Choose Dish"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:layout_above="@+id/btnLogout"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="63dp"
+            android:layout_marginTop="25dp" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberPicker"
+            android:layout_above="@+id/buttonChooseDish"
+            android:layout_alignParentEnd="true"
+            android:focusableInTouchMode="false"
+            android:orientation="horizontal"
+            android:solidColor="#000000"
+            android:layout_marginBottom="55dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Select Table"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/numberPicker"
+            android:capitalize="characters"
+            android:scaleY="0.75"
+            android:scaleX="0.75"
+            android:layout_alignBottom="@+id/numberPicker" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

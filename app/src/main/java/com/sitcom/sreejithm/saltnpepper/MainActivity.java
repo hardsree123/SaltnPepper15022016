@@ -7,11 +7,14 @@ package com.sitcom.sreejithm.saltnpepper;
 import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.GpsStatus;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sitcom.sreejithm.helper.SQLiteHandler;
 import com.sitcom.sreejithm.helper.SessionManager;
@@ -23,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogout;
     private Button btnChooseDish;
     private Button btnCheckOrder;
-
+    private NumberPicker tablenum;
     private SQLiteHandler db;
     private SessionManager session;
+    private int tableSelected;
 
     private String ServerName ="";
     @Override
@@ -37,7 +41,16 @@ public class MainActivity extends AppCompatActivity {
         txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnChooseDish = (Button) findViewById(R.id.buttonChooseDish);
-        btnCheckOrder = (Button) findViewById(R.id.chekOrder);
+        //btnCheckOrder =(Button) findViewById(R.id.chekOrder);
+        tablenum = (NumberPicker) findViewById(R.id.numberPicker);
+
+        //Populate NumberPicker values from minimum and maximum value range
+        //Set the minimum value of NumberPicker
+        tablenum.setMinValue(0);
+        //Specify the maximum value/number of NumberPicker
+        tablenum.setMaxValue(30);
+        //Gets whether the selector wheel wraps when reaching the min/max value.
+        tablenum.setWrapSelectorWheel(true);
 
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -62,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         //
         btnChooseDish.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                chooseDish();
+                takeorder();
+                //chooseDish();
             }
         });
         // Logout button click event
@@ -74,10 +88,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * the following part is no longer used and commented for the version
+         */
+        /*
         btnCheckOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckOrderStatus();                
+            }
+        });
+        */
+        //Set a value change listener for NumberPicker
+        tablenum.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+                //Display the newly selected number from picker
+                tableSelected = newVal;
             }
         });
     }
@@ -85,13 +112,28 @@ public class MainActivity extends AppCompatActivity {
     private void CheckOrderStatus() {
         Intent intent = new Intent(MainActivity.this, OrderStatus.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     private void chooseDish() {
         Intent intent = new Intent(MainActivity.this, ChooseDish.class);
         startActivity(intent);
-        finish();
+        //finish();
+    }
+
+
+    public void takeorder(){
+        if(tableSelected != 0) {
+            Intent intent = new Intent(MainActivity.this, TakeOrder.class);
+            intent.putExtra("total_guest", "Total Guest : 1");
+            intent.putExtra("table_number", "Table Number : "+String.valueOf(tableSelected));
+            intent.putExtra("waiter_assigned", "Waiter Assigned : Rocky");//+ServerName!= "" ? ServerName : "Rocky");
+            intent.putExtra("server_name", "Server Assigned : Rocky");//"+ServerName!= "" ? ServerName : "Rocky");
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Table details missing", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
