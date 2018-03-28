@@ -28,16 +28,21 @@
             android:launchMode="singleTop" />
         <!--<activity android:name="com.sitcom.choosedish.ChooseDish" />-->
         <activity android:name=".ChooseDish"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
             />
-        <activity android:name=".TakeOrder" android:screenOrientation="portrait"
+        <activity android:name=".TakeOrder" android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
             />
 
         <activity android:name=".OrderStatus"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
 

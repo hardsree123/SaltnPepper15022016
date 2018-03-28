@@ -1,17 +1,28 @@
 package com.sitcom.sreejithm.saltnpepper;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.sitcom.sreejithm.expandablelistview.ExpandableListAdapter;
 import com.sitcom.sreejithm.helper.SQLiteHandler;
 
@@ -29,6 +40,12 @@ public class TakeOrder extends RestaurantMenu {
     Button btnConfirmOrder;
     private
     String SelectedGrp = "";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +125,7 @@ public class TakeOrder extends RestaurantMenu {
             @Override
             public void onClick(View v) {
                 try {
-                    if(selectedCuisines.size() > 0) {
+                    if (selectedCuisines.size() > 0) {
                         long orderId = orderDataDb.addOrder(serverName, waiterName, tableNumber, totalGuest);
 
                         if (orderId > 0) {
@@ -121,60 +138,132 @@ public class TakeOrder extends RestaurantMenu {
                             }
                             GoToMainActivity();
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Select dish", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                catch (Exception ex){
-                    Log.println(Log.ERROR,"Order error !", ex.getMessage().toString());
+                } catch (Exception ex) {
+                    Log.println(Log.ERROR, "Order error !", ex.getMessage().toString());
                 }
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void GoToMainActivity(){
+    private void GoToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     private void SetTextViewValues(String selected) {
+        selected = selected + "\t" + "100";
+        initiatePopupWindow();
         selectedCuisines.add(selected);
     }
 
-    private void RemoveTextViewValues(String selected){
+    private void RemoveTextViewValues(String selected) {
         selectedCuisines.remove(selected);
     }
 
     private void SetListView() {
-        listViewAdapter= new ArrayAdapter<String>(this, R.layout.activity_listview, selectedCuisines);
+        listViewAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, selectedCuisines);
         listView.setAdapter(listViewAdapter);
     }
-    public void vegClicked(View view){
+
+    public void vegClicked(View view) {
         CreateVegOption();
         expListAdapter = FetchExpandableListVegAdapter(view);
         expListView.setAdapter(expListAdapter);
     }
 
-    public void nonvegClicked(View view)
-    {
+    public void nonvegClicked(View view) {
         CreateNonVegOption();
         expListAdapter = FetchExpandableListNonVegAdapter(view);
         expListView.setAdapter(expListAdapter);
     }
 
-    public void beverageClicked(View view)
-    {
+    public void beverageClicked(View view) {
         CreateBeverageOption();
         expListAdapter = FetchExpandableListBeverageAdapter(view);
         expListView.setAdapter(expListAdapter);
     }
 
-    public void desertClicked(View view)
-    {
+    public void desertClicked(View view) {
         CreateDesertOption();
         expListAdapter = FetchExpandableListDesertAdapter(view);
         expListView.setAdapter(expListAdapter);
+    }
+
+
+    private PopupWindow pwindo;
+    Button btnClosePopup;
+    Button btnCancelOrder;
+    TextView dishName;
+    EditText quantity;
+    private void initiatePopupWindow() {
+        try {
+            // We need to get the instance of the LayoutInflater
+            LayoutInflater inflater = (LayoutInflater)TakeOrder.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.quantity_price_popup,
+                    (ViewGroup) findViewById(R.id.popup_element));
+            pwindo = new PopupWindow(layout, 450, 350, true);
+            pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+            btnClosePopup = (Button) layout.findViewById(R.id.btn_close_popup);
+            btnClosePopup.setOnClickListener(cancel_button_click_listener);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private View.OnClickListener cancel_button_click_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            pwindo.dismiss();
+        }
+    };
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "TakeOrder Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.sitcom.sreejithm.saltnpepper/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "TakeOrder Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.sitcom.sreejithm.saltnpepper/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

@@ -77,9 +77,9 @@
                 android:id="@+id/listViewText"
                 android:textColor="#380808"
                 android:textSize="15dp"
-                android:layout_alignTop="@+id/chooseDish"
-                android:layout_alignEnd="@+id/selectedCuisines"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:layout_below="@+id/beverages"
+                android:layout_toEndOf="@+id/chooseDish" />
 
             <ListView
                 android:layout_width="50dp"

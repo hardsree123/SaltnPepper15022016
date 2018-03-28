@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.sitcom.sreejithm.activity.RegisterActivity;
 import com.sitcom.sreejithm.helper.Contact;
+import com.sitcom.sreejithm.helper.Dishes;
 import com.sitcom.sreejithm.helper.SessionManager;
 import com.sitcom.sreejithm.helper.SQLiteHandler;
 import com.sitcom.sreejithm.app.AppConfig;
@@ -207,6 +209,7 @@ public class Login extends AppCompatActivity {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
+                        loginThroughSqlite(email,password);// no internet login through internal database
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -241,20 +244,17 @@ public class Login extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-    /*
+
     private void fetchDish() {
         // Tag used to cancel the request
-        String tag_string_req = "req_login";
+        String tag_string_req = "req_dish";
 
-        pDialog.setMessage("Fetching dish ...");
-        showDialog();
 
-        StringRequest strReq = new StringRequest(Method.POST,
+        StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_FETCH_DISH, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Fetching dish: " + response.toString());
-                hideDialog();
 
                 try {
                     JSONObject jObj = null;
@@ -269,20 +269,19 @@ public class Login extends AppCompatActivity {
                     if (!error) {
 
                         JSONArray result = jObj.getJSONArray("result");
+                        Dishes dish = null;
                         for (int i =0 ; i<result.length();i++){
                             JSONObject jo = result.getJSONObject(i);
-                            String id = jo.getString("dishId");
-                            String dishname = jo.getString("dishname");
-                            String dishType = jo.getString("dishtype");
-                            String dishsubType = jo.getString("dishsubtype");
-                            String price = jo.getString("price");
-                            HashMap<String,String> employees = new HashMap<>();
-                            employees.put(Config.TAG_ID,id);
-                            employees.put(Config.TAG_NAME,name);
-                            list.add(employees);
+                            dish = new Dishes();
+                            dish.setDishid(Integer.valueOf(jo.getString("dishId")));
+                            dish.setDishname(jo.getString("dishname"));
+                            dish.setDishtype(jo.getString("dishtype"));
+                            dish.setDishSubType(jo.getString("dishsubtype"));
+                            dish.setDishSubType(jo.getString("price"));
+                            //setDishList(dish.getDishname(), dish.getDishtype(), dish.getDishSubType());
+                            //dishMapcollection.put(dish.getDishname(),dish);
                         }
 
-                        finish();
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
@@ -303,27 +302,13 @@ public class Login extends AppCompatActivity {
                 Log.e(TAG, "Login Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
+
             }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id", email);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
+        });
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-    */
-
     /**
      *
      * @param email

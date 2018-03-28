@@ -11,7 +11,7 @@ public class AppConfig {
     public static String URL_REGISTER = "http://192.168.0.99:8085/saltnpepper/register.php";
 
     // Server to fetch dish
-    public static String URL_FETCH_DISH = "http://192.168.0.99:8085/saltnpepper/fetch_dish.php";
+    public static String URL_FETCH_DISH = "http://192.168.0.99:8085/saltnpepper/fetch_dishes.php";
 
     //DB Preference
     public static String DB_PREFS = "sqlite";
